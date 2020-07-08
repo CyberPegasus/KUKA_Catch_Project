@@ -1,0 +1,37 @@
+<ETHERNETKRL>
+    <CONFIGURATION>
+      <EXTERNAL>
+         <TYPE>Client</TYPE>              
+      </EXTERNAL>
+      <INTERNAL>
+         <ENVIRONMENT>Program</ENVIRONMENT>   
+         <BUFFERING Limit="512" />            
+         <ALIVE Set_Flag="1" />              
+         <IP>192.168.1.234</IP>               
+         <PORT>54600</PORT>                  
+         <PROTOCOL>TCP</PROTOCOL>             
+      </INTERNAL>
+    </CONFIGURATION>
+    <RECEIVE>
+      <XML>
+         <ELEMENT Tag="Robots/Command" Type="INT" /> 
+		 <ELEMENT Tag="Robots/Pos/@X" Type="REAL" /> 
+		 <ELEMENT Tag="Robots/Pos/@Y" Type="REAL" /> 
+		 <ELEMENT Tag="Robots/Pos/@Z" Type="REAL" /> 
+		 <ELEMENT Tag="Robots/Pos/@A" Type="REAL" /> 
+		 <ELEMENT Tag="Robots/Pos/@B" Type="REAL" /> 
+		 <ELEMENT Tag="Robots/Pos/@C" Type="REAL" /> 
+      </XML>
+   </RECEIVE>
+   <SEND>
+       <XML>
+         <ELEMENT Tag="RobotState/Joint/@A1" Type="REAL"/>
+         <ELEMENT Tag="RobotState/Joint/@A2" Type="REAL"/>
+         <ELEMENT Tag="RobotState/Joint/@A3" Type="REAL"/>
+         <ELEMENT Tag="RobotState/Joint/@A4" Type="REAL"/>
+         <ELEMENT Tag="RobotState/Joint/@A5" Type="REAL"/>
+         <ELEMENT Tag="RobotState/Joint/@A6" Type="REAL"/>
+       </XML>
+   </SEND>
+</ETHERNETKRL>
+

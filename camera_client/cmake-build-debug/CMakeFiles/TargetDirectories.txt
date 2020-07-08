@@ -1,0 +1,3 @@
+/home/wxj/CLionProjects/camera_client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/wxj/CLionProjects/camera_client/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/wxj/CLionProjects/camera_client/cmake-build-debug/CMakeFiles/camera_client.dir

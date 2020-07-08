@@ -1,0 +1,77 @@
+&ACCESS RVP
+&REL 14
+DEF EkiCtrlPo()
+DECL POS Posv
+DECL POS Cent
+DECL EKI_STATUS RET
+DECL INT F
+DECL INT RobStatus
+SIGNAL CATCHINI $OUT[10]
+SIGNAL CATCH $OUT[11]
+EXT BAS (BAS_COMMAND:IN,REAL:IN)
+DECL AXIS HOME
+DECL AXIS Catch0
+BAS(#INITMOV,0)
+HOME={AXIS:A1 0,A2 -90,A3 90,A4 0,A5 0,A6 0}
+Catch0={AXIS:A1 46.95,A2 -77.32,A3 124.25,A4 0.08,A5 31.65,A6 56.56}
+PTP HOME
+PTP Catch0
+CATCHINI = TRUE
+$BASE=BASE_DATA[1]
+$TOOL=TOOL_DATA[1]
+
+Posv = {X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+Cent = {X 616.69, Y 29.13, Z 380.26, A -123.67, B 6.67, C -177.89}
+Posv = $POS_ACT
+F =0
+$FLAG[1] = FALSE
+RobStatus = 0
+
+RET=EKI_Init("EkiCtrl")
+
+
+
+WHILE (F <> 1)
+RET=EKI_Open("EkiCtrl")
+EKI_CHECK(RET,#QUIT)
+
+WAIT FOR $FLAG[1]
+$FLAG[1] = FALSE
+
+RET = EKI_GetInt("EkiCtrl", "Robots/Command",RobStatus)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@X", Posv.X)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@Y", Posv.Y)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@Z", Posv.Z)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@A", Posv.A)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@B", Posv.B)
+RET = EKI_GetReal("EkiCtrl", "Robots/Pos/@C", Posv.C)
+
+
+SWITCH RobStatus
+	CASE 1
+      LIN Cent
+      LIN Posv
+      CATCH = TRUE
+      WAIT SEC 5
+      PTP Catch0
+      CATCH = FALSE
+
+
+   CASE 2
+		F = 1
+ENDSWITCH
+
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A1", $AXIS_ACT.A1) 
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A2", $AXIS_ACT.A2) 
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A3", $AXIS_ACT.A3) 
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A4", $AXIS_ACT.A4) 
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A5", $AXIS_ACT.A5) 
+RET=EKI_SetReal("EkiCtrl","RobotState/Joint/@A6", $AXIS_ACT.A6) 
+RET = EKI_Send("EkiCtrl","RobotState")
+RET=EKI_Close("EkiCtrl")
+
+ENDWHILE
+
+RET=EKI_Clear("EkiCtrl")
+
+END
